@@ -1,4 +1,4 @@
-# Project _NAME_
+# Project _PERCH_
 
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
 
@@ -6,86 +6,87 @@ _REPLACE OR REMOVE EVERYTING BETWEEN "\_"_
 
 ### Student Info
 
--   Name: _YOUR NAME_
--   Section: _##_
+-   Name: _Kai Gidwani_
+-   Section: _02_
 
 ## Simulation Design
 
-_A brief explanation of your simulation._
+My simulation is going to have flocks of birds flying and landing on perches in trees. Occasionally big birds will want to take the perch of a smaller bird and force them to move. Players can also click to shake a tree and get birds to move off of it.
 
 ### Controls
 
--   _List all of the actions the player can have in your simulation_
-    -   _Include how to preform each action ( keyboard, mouse, UI Input )_
-    -   _Include what impact an action has in the simulation ( if is could be unclear )_
+-   Click on a tree to shake it and get the birds on it to move.
 
-## _Agent 1 Name_
+## _Small bird_
 
-_A brief explanation of this agent._
+Small birds flock together and will try to land on a perch in a tree if they aren't escaping from being shaken out of their perch, or forced out by a big bird.
 
-### _State 1 Name_
+### _Seeking Spot_
 
-**Objective:** _A brief explanation of this state's objective._
+**Objective:** _Find a spot in a tree to land in._
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-   - _If behavior has input data list it here_
-   - _eg, Flee - nearest Agent2_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- Avoid - Big bird
+- Seek - Nearest unoccupied perch
+- Flock - Follow group
+- Obstacles - Big birds, the ground
+- Seperation - Other small birds
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
-   - _eg, When this agent gets within range of Agent2_
-   - _eg, When this agent has reached target of State2_
+- When a big bird pushes it out of its perch
+- When a player's shake pushes it out of its perch
+- When it leaves voluntarily with other birds nearby
    
-### _State 2 Name_
+### _Resting_
 
-**Objective:** _A brief explanation of this state's objective._
+**Objective:** _Rest in a perch. Leave if forced out or if wanting to follow nearby birds. Leave after set time._
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- Avoid - Big bird
+- Rest - Prefer not to move
+- Flock - Follow group
+- Obstacles - Big birds
+- Seperation - Other small birds
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
+- When it lands in a perch
 
-## _Agent 2 Name_
+## _Big bird_
 
-_A brief explanation of this agent._
+Big birds don't flock with any other birds. They will try to land on a perch and force a small bird out of that perch if necessary. They cannot be forced out by other big birds.
 
-### _State 1 Name_
+### _Seeking Spot_
 
-**Objective:** _A brief explanation of this state's objective._
+**Objective:** _Find a spot in a tree to land in. Force a small bird out if necessary._
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- Seek - ANY nearest perch
+- Obstacles - The ground
+- Seperation - Other big birds
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
+- When a player's shake pushes it out of its perch
+- When it leaves voluntarily with other birds nearby
    
-### _State 2 Name_
+### _Resting_
 
-**Objective:** _A brief explanation of this state's objective._
+**Objective:** _Rest in a perch. Leave if forced out or after set time._
 
 #### Steering Behaviors
 
-- _List all behaviors used by this state_
-- Obstacles - _List all obstacle types this state avoids_
-- Seperation - _List all agents this state seperates from_
+- Rest - Prefer not to move
+- Obstacles - Big birds
+- Seperation - Big birds
    
 #### State Transistions
 
-- _List all the ways this agent can transition to this state_
+- When it lands in a perch
 
 ## Sources
 
@@ -97,6 +98,7 @@ _A brief explanation of this agent._
 - _List out what you added to your game to make it different for you_
 - _If you will add more agents or states make sure to list here and add it to the documention above_
 - _If you will add your own assets make sure to list it here and add it to the Sources section
+- I plan on making all the art assets myself.
 
 ## Known Issues
 
