@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,8 +16,15 @@ public abstract class Agent : MonoBehaviour
 
     [SerializeField] private float wanderRange = 1f;
 
+    [SerializeField] private float separateRange = 1f;
+    public float SeparateRange { get { return separateRange; } }
+
     protected Vector3 ultimaForce;
 
+    [SerializeField] protected string agentType;
+
+    [SerializeField] SceneManager manager;
+    public SceneManager Manager { set { manager = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -100,7 +108,7 @@ public abstract class Agent : MonoBehaviour
         // Get a random angle to determine displacement vector
 
         //float maxWanderChange = maxWanderChangePerSecond * time;
-        wanderAngle += Random.Range(-wanderRange, wanderRange);
+        wanderAngle += UnityEngine.Random.Range(-wanderRange, wanderRange);
 
         // If it goes above or below the maximum, bring it back within the range
         if (wanderAngle > maxWanderAngle)
@@ -126,13 +134,35 @@ public abstract class Agent : MonoBehaviour
     {
         Vector3 futurePosition = CalcFuturePosition(time);
 
-        if (futurePosition.x > physicsObject.ScreenMax.x ||
-            futurePosition.x < -physicsObject.ScreenMax.x ||
-            futurePosition.y > physicsObject.ScreenMax.y ||
-            futurePosition.y < -physicsObject.ScreenMax.y)
+        if (futurePosition.x + physicsObject.Radius > physicsObject.ScreenMax.x ||
+            futurePosition.x - physicsObject.Radius < -physicsObject.ScreenMax.x ||
+            futurePosition.y + physicsObject.Radius > physicsObject.ScreenMax.y ||
+            futurePosition.y - physicsObject.Radius < -physicsObject.ScreenMax.y)
         {
             return Seek(Vector3.zero);
         }
         return Vector3.zero;
+    }
+
+    protected Vector3 Separate()
+    {
+        // Sum of all forcer to separate
+        Vector3 separateForce = Vector3.zero;
+
+        foreach (GameObject bird in manager.allBirds) 
+        {
+            // Worse distance getting method:
+            // float dist = Vector3.Distance(transform.position, bird.transform.position);
+
+            // Better distance getting method:
+            float dist = Vector3.SqrMagnitude(Seek(bird));
+
+            if (dist > Mathf.Epsilon)
+            {
+                separateForce += Flee(bird) * (separateRange / dist);
+            }
+        }
+
+        return separateForce;
     }
 }

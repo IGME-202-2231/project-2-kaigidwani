@@ -30,6 +30,7 @@ public class PhysicsObject : MonoBehaviour
 
     // For collisions later
     [SerializeField] private float radius;
+    public float Radius { get { return radius; } }
 
 
     // Start is called before the first frame update
@@ -135,6 +136,7 @@ public class PhysicsObject : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, radius);
         Gizmos.DrawLine(transform.position, transform.position + Velocity);
     }
 }

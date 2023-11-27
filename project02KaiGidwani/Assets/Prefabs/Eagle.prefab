@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1213111091354214908
 SpriteRenderer:
@@ -108,7 +108,7 @@ MonoBehaviour:
   acceleration: {x: 0, y: 0, z: 0}
   mass: 1
   maxSpeed: 10
-  radius: 0
+  radius: 0.8
 --- !u!114 &8244852266853721680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,8 +127,12 @@ MonoBehaviour:
   maxWanderChangePerSecond: 10
   wanderRadius: 1
   wanderRange: 1
+  separateRange: 1
+  agentType: Eagle
+  manager: {fileID: 0}
   wanderTime: 1
   wanderScalar: 1
   boundsTime: 1
   boundsScalar: 3
+  separateScalar: 1
   maxWanderAngle: 45

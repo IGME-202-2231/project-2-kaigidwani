@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.InputSystem;
+using UnityEngine.InputSystem;
 
 public class SceneManager : MonoBehaviour
 {
-    [SerializeField] List<PhysicsObject> physicsObjects;
+    // Prefab for crows
     [SerializeField] private GameObject crowPrefab;
+
+    // Prefab for eagles
     [SerializeField] private GameObject eaglePrefab;
-    private List<GameObject> allBirds = new List<GameObject>();
+
+    // List for all birds
+    [SerializeField] public List<GameObject> allBirds;
 
     // The camera for the scene
     [SerializeField] private Camera cameraObject;
@@ -17,7 +21,7 @@ public class SceneManager : MonoBehaviour
     private float height;
     private float width;
 
-    //private Vector3 mousePosition;
+    private Vector3 mousePosition;
 
 
     // Start is called before the first frame update
@@ -28,23 +32,18 @@ public class SceneManager : MonoBehaviour
         // Width isn't a value on the camera object
         width = height * cameraObject.aspect;
 
+        // Initiate allBirds
+        allBirds = new List<GameObject>();
+
         Spawn();
     }
 
     // Update is called once per frame
     void Update()
     {
-        /** InputSystem isn't working for me and it is not showing up in the settings to change it.
-         * I dont need it immediatley at the moment so im jut temporarily disabling it.
-         * 
+        // Get the current mouse position
         mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mousePosition.z = 0;
-
-        foreach(PhysicsObject physicsObject in physicsObjects)
-        {
-            physicsObject.ApplyForce(mousePosition - physicsObject.transform.position);
-        }
-        */
     }
 
     // Spawn creatures
@@ -82,13 +81,12 @@ public class SceneManager : MonoBehaviour
             Instantiate(
                 crowPrefab,
                 new Vector3(
-
-                    // ***Rewrite to have gaussian spread***
                     Gaussian(0.0f, width / 8),
                     Gaussian(0.0f, height / 8),
                     0),
                 Quaternion.identity)
                 );
+        allBirds[allBirds.Count - 1].GetComponent<Agent>().Manager = this;
     }
 
     // Spawn an eagle
@@ -99,13 +97,12 @@ public class SceneManager : MonoBehaviour
             Instantiate(
                 eaglePrefab,
                 new Vector3(
-
-                    // ***Rewrite to have gaussian spread***
                     Gaussian(0.0f, width / 8),
                     Gaussian(0.0f, height / 8),
                     0),
                 Quaternion.identity)
                 );
+        allBirds[allBirds.Count - 1].GetComponent<Agent>().Manager = this;
     }
 
     // Method for gaussian curve formula
@@ -124,6 +121,6 @@ public class SceneManager : MonoBehaviour
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        //Gizmos.DrawLine(transform.position, mousePosition);
+        Gizmos.DrawLine(transform.position, mousePosition);
     }
 }
