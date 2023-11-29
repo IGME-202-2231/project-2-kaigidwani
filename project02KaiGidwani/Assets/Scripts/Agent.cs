@@ -111,6 +111,7 @@ public abstract class Agent : MonoBehaviour
         wanderAngle += UnityEngine.Random.Range(-wanderRange, wanderRange);
 
         // If it goes above or below the maximum, bring it back within the range
+        /*
         if (wanderAngle > maxWanderAngle)
         {
             wanderAngle = maxWanderAngle;
@@ -118,7 +119,7 @@ public abstract class Agent : MonoBehaviour
         else if (wanderAngle < -maxWanderAngle)
         {
             wanderAngle = -maxWanderAngle;
-        }
+        }*/
 
         // Where would that displacement vector end?  Go there.
         Vector3 targetPos = futurePos;
@@ -146,16 +147,16 @@ public abstract class Agent : MonoBehaviour
 
     protected Vector3 Separate()
     {
-        // Sum of all forcer to separate
+        // Sum of all forces to separate
         Vector3 separateForce = Vector3.zero;
 
         foreach (GameObject bird in manager.allBirds) 
         {
             // Worse distance getting method:
-            // float dist = Vector3.Distance(transform.position, bird.transform.position);
+            float dist = Vector3.Distance(transform.position, bird.transform.position);
 
             // Better distance getting method:
-            float dist = Vector3.SqrMagnitude(Seek(bird));
+            //float dist = Vector3.SqrMagnitude(Seek(bird));
 
             if (dist > Mathf.Epsilon)
             {

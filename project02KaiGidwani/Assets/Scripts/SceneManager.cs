@@ -51,7 +51,7 @@ public class SceneManager : MonoBehaviour
     {
         CleanUp();
 
-        int numBirds = Random.Range(5, 15);
+        int numBirds = Random.Range(5, 10);
         for (int i = 0; i < numBirds; i++)
         {
             SpawnCrow();
@@ -118,9 +118,11 @@ public class SceneManager : MonoBehaviour
         return mean + stdDev * gaussValue;
     }
 
+    /*
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, mousePosition);
     }
+    */
 }

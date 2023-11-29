@@ -2,6 +2,8 @@
 
 [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
 
+# Note for TA Mike!
+I'm changing my game from birds landing on a tree to a school of fish being hunted. Erika and I both agreed that it sounds easier to do and more fun. She also told me to write this note haha
 
 ### Student Info
 
@@ -10,82 +12,77 @@
 
 ## Simulation Design
 
-My simulation is going to have flocks of birds flying and landing on perches in trees. Occasionally big birds will want to take the perch of a smaller bird and force them to move. Players can also click to shake a tree and get birds to move off of it.
+My simulation is going to have a school of small fish flocking together and swordfish that are trying to hunt them. Players can click to spawn food for the small fish that will attract them to that point.
 
 ### Controls
 
--   Click on a tree to shake it and get the birds on it to move.
+-   Click on a spot to spawn fish food for the small fish to eat.
 
-## _Small bird_
+## _Small fish_
 
-Small birds flock together and will try to land on a perch in a tree if they aren't escaping from being shaken out of their perch, or forced out by a big bird.
+Small fish flock together and will try to stay together and avoid swordfish. They will also be attracted to fish food and try to eat it.
 
-### _Seeking Spot_
+### _Schooling_
 
-**Objective:** _Find a spot in a tree to land in._
+**Objective:** _School with all the other fish to avoid getting singled out by the swordfish._
 
 #### Steering Behaviors
 
-- Avoid - Big bird
-- Seek - Nearest unoccupied perch
+- Avoid - Swordfish
 - Flock - Follow group
-- Obstacles - Big birds, the ground
+- Obstacles - Swordfish
+- Seperation - Other small fish
+   
+#### State Transistions
+
+- Gets hunted by a swordfish
+- Notices a food piece nearby
+   
+### _Hunting fish food_
+
+**Objective:** _Go after fish food, even if it means leaving the school._
+
+#### Steering Behaviors
+
+- Seek - fish food
+- Avoid - Swordfish
+- Obstacles - Swordfish
 - Seperation - Other small birds
    
 #### State Transistions
 
-- When a big bird pushes it out of its perch
-- When a player's shake pushes it out of its perch
-- When it leaves voluntarily with other birds nearby
-   
-### _Resting_
+- Getting hunted by a swordfish
+- Fish food no longer nearby (eaten by them or another fish)
 
-**Objective:** _Rest in a perch. Leave if forced out or if wanting to follow nearby birds. Leave after set time._
+## _Swordfish_
 
-#### Steering Behaviors
+Swordfish don't school with small fish. They will occasionally try to shoot through the school and catch a small fish. They are NOT attracted to fish food.
 
-- Avoid - Big bird
-- Rest - Prefer not to move
-- Flock - Follow group
-- Obstacles - Big birds
-- Seperation - Other small birds
-   
-#### State Transistions
+### _Stalking_
 
-- When it lands in a perch
-
-## _Big bird_
-
-Big birds don't flock with any other birds. They will try to land on a perch and force a small bird out of that perch if necessary. They cannot be forced out by other big birds.
-
-### _Seeking Spot_
-
-**Objective:** _Find a spot in a tree to land in. Force a small bird out if necessary._
+**Objective:** _Stalking around the school, waiting on cooldown before they hunt._
 
 #### Steering Behaviors
 
-- Seek - ANY nearest perch
-- Obstacles - The ground
-- Seperation - Other big birds
+- Seperation - Other swordfish, small fish
    
 #### State Transistions
 
-- When a player's shake pushes it out of its perch
-- When it leaves voluntarily with other birds nearby
+- After the cooldown is over, they will try to hunt
    
-### _Resting_
+### _Hunting_
 
-**Objective:** _Rest in a perch. Leave if forced out or after set time._
+**Objective:** _Shoot through the middle of the school of small fish, trying to catch a small fish._
 
 #### Steering Behaviors
 
-- Rest - Prefer not to move
-- Obstacles - Big birds
-- Seperation - Big birds
+- Seek - Middle of school
+- Seperation - Other swordfish
    
 #### State Transistions
 
-- When it lands in a perch
+- If it hits a small fish, return to stalking immediatley
+- If it doesn't hit any fish, return to stalking
 
 ## Sources
 

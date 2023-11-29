@@ -50,7 +50,7 @@ public class Wanderer : Agent
     }
 
     
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position, transform.position + ultimaForce);

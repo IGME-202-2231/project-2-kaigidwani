@@ -73,7 +73,7 @@ public class PhysicsObject : MonoBehaviour
 
         position += velocity * Time.deltaTime;
 
-        CheckForBounce();
+        //CheckForBounce();
 
 
         // Grab current direction from velocity  - New

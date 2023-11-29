@@ -107,7 +107,7 @@ MonoBehaviour:
   gravityStrength: {x: 0, y: 0, z: 0}
   acceleration: {x: 0, y: 0, z: 0}
   mass: 1
-  maxSpeed: 10
+  maxSpeed: 5
   radius: 0.4
 --- !u!114 &3513894802736876371
 MonoBehaviour:
@@ -124,16 +124,16 @@ MonoBehaviour:
   physicsObject: {fileID: 8344867000808181330}
   maxSpeed: 5
   maxForce: 10
-  maxWanderChangePerSecond: 10
+  maxWanderChangePerSecond: 5
   wanderRadius: 1
   wanderRange: 1
-  separateRange: 1
+  separateRange: 0.4
   agentType: Crow
   manager: {fileID: 0}
   wanderTime: 1
-  wanderScalar: 1
+  wanderScalar: 3
   boundsTime: 1
-  boundsScalar: 2
-  separateScalar: 3
+  boundsScalar: 10
+  separateScalar: 0.5
   maxWanderAngle: 45
   avoidTime: 1
