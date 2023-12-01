@@ -1,7 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using UnityEngine.TestTools;
+using static UnityEditor.FilePathAttribute;
+using static UnityEngine.GraphicsBuffer;
 
 public abstract class Agent : MonoBehaviour
 {
@@ -17,6 +23,11 @@ public abstract class Agent : MonoBehaviour
     [SerializeField] private float wanderRange = 1f;
 
     [SerializeField] private float separateRange = 1f;
+
+    [SerializeField] private float cohesionRange = 5f;
+
+    [SerializeField] private float alignRange = 5f;
+
     public float SeparateRange { get { return separateRange; } }
 
     protected Vector3 ultimaForce;
@@ -24,7 +35,7 @@ public abstract class Agent : MonoBehaviour
     [SerializeField] protected string agentType;
 
     [SerializeField] SceneManager manager;
-    public SceneManager Manager { set { manager = value; } }
+    public SceneManager Manager { get { return manager; } set { manager = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -111,7 +122,8 @@ public abstract class Agent : MonoBehaviour
         wanderAngle += UnityEngine.Random.Range(-wanderRange, wanderRange);
 
         // If it goes above or below the maximum, bring it back within the range
-        /*
+        
+        
         if (wanderAngle > maxWanderAngle)
         {
             wanderAngle = maxWanderAngle;
@@ -119,7 +131,8 @@ public abstract class Agent : MonoBehaviour
         else if (wanderAngle < -maxWanderAngle)
         {
             wanderAngle = -maxWanderAngle;
-        }*/
+        }
+        
 
         // Where would that displacement vector end?  Go there.
         Vector3 targetPos = futurePos;
@@ -150,7 +163,7 @@ public abstract class Agent : MonoBehaviour
         // Sum of all forces to separate
         Vector3 separateForce = Vector3.zero;
 
-        foreach (GameObject bird in manager.allBirds) 
+        foreach (GameObject bird in manager.allFish) 
         {
             // Worse distance getting method:
             float dist = Vector3.Distance(transform.position, bird.transform.position);
@@ -163,7 +176,60 @@ public abstract class Agent : MonoBehaviour
                 separateForce += Flee(bird) * (separateRange / dist);
             }
         }
-
         return separateForce;
+    }
+
+    protected Vector3 Cohesion(List<GameObject> allFish)
+    {
+        Vector3 sum = Vector3.zero;
+        int count = 0;
+        foreach (GameObject other in allFish)
+        {
+            float d = Vector3.Distance(transform.position, other.transform.position);
+            if ((d > 0) && (d < cohesionRange))
+            {
+                sum += other.transform.position;
+                count++;
+            }
+        }
+        if (count > 0)
+        {
+            sum /= count;
+            return Seek(sum);
+        }
+        else
+        {
+            return Vector3.zero;
+        }
+    }
+
+    protected Vector3 Align(List<GameObject> allFish)
+    {
+        Vector3 sum = Vector3.zero;
+        int count = 0;
+        foreach (GameObject other in allFish)
+        {
+            float d = Vector3.Distance(transform.position, other.transform.position);
+            if ((d > 0) && (d < alignRange))
+            {
+                sum += other.GetComponent<PhysicsObject>().Velocity;
+                count++;
+            }
+        }
+        if (count > 0)
+        {
+            sum /= count;
+            sum.Normalize();
+            sum *= maxSpeed;
+            Vector3 steer = (sum - this.GetComponent<PhysicsObject>().Velocity);
+            steer = Vector3.ClampMagnitude(steer, maxForce);
+            return steer;
+
+        }
+        else
+        {
+            return Vector3.zero;
+        }
+
     }
 }

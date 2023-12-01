@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bd7e51da2c4e3e46b1173d664645cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crowPrefab: {fileID: 3428529934365093006, guid: 2099a9b4969017b4f8b104bfe0c7e178, type: 3}
-  eaglePrefab: {fileID: 8769833364914679852, guid: c4fbd99a617ebac4aab7e3ff4bb213a5, type: 3}
-  allBirds: []
+  smallFishPrefab: {fileID: 7269018648351624933, guid: 13ac45f0ef4515246acf3185a2a131f3, type: 3}
+  swordfishPrefab: {fileID: 2769165776805740054, guid: ac62a3e7e3dfb49418e5b8bb8a9f11ed, type: 3}
+  allFish: []
   cameraObject: {fileID: 519420031}
 --- !u!4 &233605535
 Transform:

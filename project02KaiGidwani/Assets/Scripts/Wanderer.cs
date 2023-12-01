@@ -17,10 +17,17 @@ public class Wanderer : Agent
     private Vector3 separateForce;
     [SerializeField] private float separateScalar;
 
+    private Vector3 cohesionForce;
+    [SerializeField] private float cohesionScalar;
+
+    private Vector3 alignForce;
+    [SerializeField] private float alignScalar;
+
     private float wanderAngle = 0f;
     [SerializeField] public float maxWanderAngle = 45f;
 
     [SerializeField] float avoidTime;
+
 
     protected override void Init()
     {
@@ -45,6 +52,16 @@ public class Wanderer : Agent
         separateForce *= separateScalar;
         ultimaForce += separateForce;
 
+        // Get cohesion force
+        cohesionForce = Cohesion(this.GetComponent<Agent>().Manager.allFish);
+        cohesionForce *= cohesionScalar;
+        ultimaForce += cohesionForce;
+
+        // Get align force
+        alignForce = Align(this.GetComponent<Agent>().Manager.allFish);
+        alignForce *= alignScalar;
+        ultimaForce += alignForce;
+
         // Apply forces to the physics object
         physicsObject.ApplyForce(ultimaForce);
     }
@@ -60,6 +77,12 @@ public class Wanderer : Agent
 
         Gizmos.color = Color.white;
         Gizmos.DrawLine(transform.position, transform.position + boundsForce);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + cohesionForce);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, transform.position + alignForce);
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawLine(transform.position, transform.position + separateForce);

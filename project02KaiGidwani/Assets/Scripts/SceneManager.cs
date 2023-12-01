@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 public class SceneManager : MonoBehaviour
 {
     // Prefab for crows
-    [SerializeField] private GameObject crowPrefab;
+    [SerializeField] private GameObject smallFishPrefab;
 
     // Prefab for eagles
-    [SerializeField] private GameObject eaglePrefab;
+    [SerializeField] private GameObject swordfishPrefab;
 
     // List for all birds
-    [SerializeField] public List<GameObject> allBirds;
+    [SerializeField] public List<GameObject> allFish;
 
     // The camera for the scene
     [SerializeField] private Camera cameraObject;
@@ -33,7 +33,7 @@ public class SceneManager : MonoBehaviour
         width = height * cameraObject.aspect;
 
         // Initiate allBirds
-        allBirds = new List<GameObject>();
+        allFish = new List<GameObject>();
 
         Spawn();
     }
@@ -51,58 +51,64 @@ public class SceneManager : MonoBehaviour
     {
         CleanUp();
 
-        int numBirds = Random.Range(5, 10);
-        for (int i = 0; i < numBirds; i++)
+        int numFish = Random.Range(15, 30);
+        for (int i = 0; i < numFish; i++)
         {
-            SpawnCrow();
+            SpawnSmallFish();
+            /* Spawn a lesser but appropiate amount of swordfish
             if (i % 3 == 0)
             {
-                SpawnEagle();
+                SpawnSwordFish();
             }
+            */
         }
+        // Just spawn 2 swordfish
+        SpawnSwordFish();
+        SpawnSwordFish();
+
     }
 
 
     // Clean up
     void CleanUp()
     {
-        foreach (GameObject c in allBirds)
+        foreach (GameObject c in allFish)
         {
             Destroy(c); // Remove them from the scene
         }
-        allBirds.Clear(); // Remove the references to them
+        allFish.Clear(); // Remove the references to them
     }
 
     // Spawn a crow
-    private void SpawnCrow()
+    private void SpawnSmallFish()
     {
         // Create one
-        allBirds.Add(
+        allFish.Add(
             Instantiate(
-                crowPrefab,
+                smallFishPrefab,
                 new Vector3(
                     Gaussian(0.0f, width / 8),
                     Gaussian(0.0f, height / 8),
                     0),
                 Quaternion.identity)
                 );
-        allBirds[allBirds.Count - 1].GetComponent<Agent>().Manager = this;
+        allFish[allFish.Count - 1].GetComponent<Agent>().Manager = this;
     }
 
     // Spawn an eagle
-    private void SpawnEagle()
+    private void SpawnSwordFish()
     {
         // Create one
-        allBirds.Add(
+        allFish.Add(
             Instantiate(
-                eaglePrefab,
+                swordfishPrefab,
                 new Vector3(
                     Gaussian(0.0f, width / 8),
                     Gaussian(0.0f, height / 8),
                     0),
                 Quaternion.identity)
                 );
-        allBirds[allBirds.Count - 1].GetComponent<Agent>().Manager = this;
+        allFish[allFish.Count - 1].GetComponent<Agent>().Manager = this;
     }
 
     // Method for gaussian curve formula
