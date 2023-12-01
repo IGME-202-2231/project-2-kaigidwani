@@ -23,6 +23,8 @@ public class Wanderer : Agent
     private Vector3 alignForce;
     [SerializeField] private float alignScalar;
 
+    [SerializeField] private float avoidScalar;
+
     private float wanderAngle = 0f;
     [SerializeField] public float maxWanderAngle = 45f;
 
@@ -62,11 +64,14 @@ public class Wanderer : Agent
         alignForce *= alignScalar;
         ultimaForce += alignForce;
 
+        // Get avoiding obstacles force
+        ultimaForce += AvoidObstacles(avoidTime) * avoidScalar;
+
         // Apply forces to the physics object
         physicsObject.ApplyForce(ultimaForce);
     }
 
-    
+    /*
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.black;
@@ -87,10 +92,10 @@ public class Wanderer : Agent
         Gizmos.color = Color.magenta;
         Gizmos.DrawLine(transform.position, transform.position + separateForce);
         Gizmos.DrawWireSphere(transform.position, this.GetComponent<Agent>().SeparateRange);
-    }
-   /* 
+    } */
+   
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         //
         //  Draw safe space box
@@ -123,5 +128,5 @@ public class Wanderer : Agent
         {
             Gizmos.DrawLine(transform.position, pos);
         }
-    } */
+    } 
 }

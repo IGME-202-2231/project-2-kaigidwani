@@ -15,6 +15,8 @@ public class PhysicsObject : MonoBehaviour
 
     public Vector3 Velocity { get { return velocity; } }
 
+    public Vector3 Direction { get { return direction; } }
+
     // Sum of all forces in a frame - New
     [SerializeField] private Vector3 acceleration = Vector3.zero;
 
@@ -22,6 +24,7 @@ public class PhysicsObject : MonoBehaviour
     [SerializeField] private float mass = 1;
 
     [SerializeField] private float maxSpeed = 10;
+    public float MaxSpeed { get { return maxSpeed; } }
 
     // window bounds
     private Vector3 screenMax = Vector3.zero;

@@ -129,6 +129,7 @@ MonoBehaviour:
   wanderRange: 1
   separateRange: 1
   cohesionRange: 5
+  alignRange: 5
   agentType: Swordfish
   manager: {fileID: 0}
   wanderTime: 1
@@ -136,6 +137,7 @@ MonoBehaviour:
   boundsTime: 1
   boundsScalar: 10
   separateScalar: 0
+  cohesionScalar: 0
+  alignScalar: 0
   maxWanderAngle: 45
   avoidTime: 1
-  cohesionScalar: 0

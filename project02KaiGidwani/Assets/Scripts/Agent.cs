@@ -30,6 +30,8 @@ public abstract class Agent : MonoBehaviour
 
     public float SeparateRange { get { return separateRange; } }
 
+    protected List<Vector3> foundObstacles = new List<Vector3>();
+
     protected Vector3 ultimaForce;
 
     [SerializeField] protected string agentType;
@@ -231,5 +233,64 @@ public abstract class Agent : MonoBehaviour
             return Vector3.zero;
         }
 
+    }
+
+    protected Vector3 AvoidObstacles(float avoidTime)
+    {
+        Vector3 totalAvoidForce = Vector3.zero;
+        foundObstacles.Clear();
+
+
+        foreach(GameObject obstacle in manager.allFish)
+        {
+            // A bunch of checks to see if I care
+
+            Vector3 agentToObstacle = obstacle.transform.position - transform.position;
+            float rightDot = 0, forwardDot = 0;
+
+            forwardDot = Vector3.Dot(physicsObject.Direction, agentToObstacle);
+
+            Vector3 futurePos = CalcFuturePosition(avoidTime);
+            float dist = Vector3.Distance(transform.position, futurePos);
+
+            
+            // If in front of me
+            if (forwardDot >= -obstacle.GetComponent<PhysicsObject>().Radius)
+            {
+                // Within the box in front of us
+                if (forwardDot <= dist + obstacle.GetComponent<PhysicsObject>().Radius)
+                {
+                    // how far left/right?
+                    rightDot = Vector3.Dot(transform.right, agentToObstacle);
+
+                    Vector3 steeringForce = transform.right * (forwardDot / dist) * physicsObject.MaxSpeed;
+
+                    // Is the obstacle within the safe box width?
+                    if (Math.Abs(rightDot) <= physicsObject.Radius)
+                    {
+                        // If I care
+                        // TODO: Add a steering force
+                        foundObstacles.Add(obstacle.transform.position);
+
+
+                        // If left, steer right
+                        if (rightDot < 0)
+                        {
+                            totalAvoidForce += steeringForce;
+                        }
+
+                        // If right, steer left
+                        else
+                        {
+                            totalAvoidForce -= steeringForce;
+                        }
+                    }
+                }
+            }
+            // Otherwise it's behind me and I don't care
+            
+        }
+
+        return totalAvoidForce;
     }
 }
