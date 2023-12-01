@@ -17,6 +17,10 @@ public class SceneManager : MonoBehaviour
     // The camera for the scene
     [SerializeField] private Camera cameraObject;
 
+    [SerializeField] private int minFish;
+
+    [SerializeField] private int maxFish;
+
     // Window bounds
     private float height;
     private float width;
@@ -51,10 +55,10 @@ public class SceneManager : MonoBehaviour
     {
         CleanUp();
 
-        int numFish = Random.Range(15, 30);
+        int numFish = Random.Range(minFish, maxFish);
         for (int i = 0; i < numFish; i++)
         {
-            SpawnSmallFish();
+            SpawnFish(smallFishPrefab);
             /* Spawn a lesser but appropiate amount of swordfish
             if (i % 3 == 0)
             {
@@ -63,8 +67,10 @@ public class SceneManager : MonoBehaviour
             */
         }
         // Just spawn 2 swordfish
-        SpawnSwordFish();
-        SpawnSwordFish();
+        SpawnFish(swordfishPrefab, new Vector3(-5, 3, 0));
+        SpawnFish(swordfishPrefab, new Vector3(4, 4, 0));
+        SpawnFish(swordfishPrefab, new Vector3(6, -2, 0));
+        SpawnFish(swordfishPrefab, new Vector3(-2, -3, 0));
 
     }
 
@@ -79,29 +85,13 @@ public class SceneManager : MonoBehaviour
         allFish.Clear(); // Remove the references to them
     }
 
-    // Spawn a crow
-    private void SpawnSmallFish()
+    // Spawn a fish
+    private void SpawnFish(GameObject fishPrefab)
     {
         // Create one
         allFish.Add(
             Instantiate(
-                smallFishPrefab,
-                new Vector3(
-                    Gaussian(0.0f, width / 8),
-                    Gaussian(0.0f, height / 8),
-                    0),
-                Quaternion.identity)
-                );
-        allFish[allFish.Count - 1].GetComponent<Agent>().Manager = this;
-    }
-
-    // Spawn an eagle
-    private void SpawnSwordFish()
-    {
-        // Create one
-        allFish.Add(
-            Instantiate(
-                swordfishPrefab,
+                fishPrefab,
                 new Vector3(
                     Gaussian(0.0f, width / 8),
                     Gaussian(0.0f, height / 8),
@@ -111,6 +101,19 @@ public class SceneManager : MonoBehaviour
         GameObject thisFish = allFish[allFish.Count - 1];
         thisFish.GetComponent<Agent>().Manager = this;
     }
+    private void SpawnFish(GameObject fishPrefab, Vector3 position)
+    {
+        // Create one
+        allFish.Add(
+            Instantiate(
+                fishPrefab,
+                position,
+                Quaternion.identity)
+                );
+        GameObject thisFish = allFish[allFish.Count - 1];
+        thisFish.GetComponent<Agent>().Manager = this;
+    }
+
 
     // Method for gaussian curve formula
     // Got from week 6 Random slides in IGME-202:

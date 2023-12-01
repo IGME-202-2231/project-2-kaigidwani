@@ -136,9 +136,9 @@ MonoBehaviour:
   wanderScalar: 3
   boundsTime: 1
   boundsScalar: 10
-  separateScalar: 0.5
-  cohesionScalar: 1
-  alignScalar: 1
+  separateScalar: 0
+  cohesionScalar: 0
+  alignScalar: 0
   avoidScalar: 7
   maxWanderAngle: 45
   avoidTime: 1

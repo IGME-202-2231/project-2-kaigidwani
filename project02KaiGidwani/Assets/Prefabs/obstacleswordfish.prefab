@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8189871665740557272}
   - component: {fileID: 5085620725328415364}
   - component: {fileID: -8788054896433873437}
-  - component: {fileID: 920404072203564449}
+  - component: {fileID: 572663416625730904}
   m_Layer: 0
   m_Name: obstacleswordfish
   m_TagString: Untagged
@@ -109,7 +109,7 @@ MonoBehaviour:
   mass: 1
   maxSpeed: 5
   radius: 1
---- !u!114 &920404072203564449
+--- !u!114 &572663416625730904
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,13 +118,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2769165776805740054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c38a8106c5261c4da9968d573cb3753, type: 3}
+  m_Script: {fileID: 11500000, guid: 966d990c9f26e0d4d84ddff3dcfce93a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   physicsObject: {fileID: -8788054896433873437}
-  maxSpeed: 5
-  maxForce: 10
-  maxWanderChangePerSecond: 5
+  maxSpeed: 0
+  maxForce: 0
+  maxWanderChangePerSecond: 10
   wanderRadius: 1
   wanderRange: 1
   separateRange: 1
@@ -132,12 +132,3 @@ MonoBehaviour:
   alignRange: 5
   agentType: Swordfish
   manager: {fileID: 0}
-  wanderTime: 1
-  wanderScalar: 3
-  boundsTime: 1
-  boundsScalar: 10
-  separateScalar: 0
-  cohesionScalar: 0
-  alignScalar: 0
-  maxWanderAngle: 45
-  avoidTime: 1

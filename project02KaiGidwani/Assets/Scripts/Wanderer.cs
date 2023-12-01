@@ -8,11 +8,11 @@ public class Wanderer : Agent
 {
     private Vector3 wanderForce;
     [SerializeField] private float wanderTime;
-    [SerializeField, Min(1f)] private float wanderScalar;
+    [SerializeField] private float wanderScalar;
 
     private Vector3 boundsForce;
     [SerializeField] private float boundsTime;
-    [SerializeField, Min(1f)] private float boundsScalar;
+    [SerializeField] private float boundsScalar;
 
     private Vector3 separateForce;
     [SerializeField] private float separateScalar;
@@ -71,7 +71,7 @@ public class Wanderer : Agent
         physicsObject.ApplyForce(ultimaForce);
     }
 
-    /*
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.black;
@@ -92,11 +92,8 @@ public class Wanderer : Agent
         Gizmos.color = Color.magenta;
         Gizmos.DrawLine(transform.position, transform.position + separateForce);
         Gizmos.DrawWireSphere(transform.position, this.GetComponent<Agent>().SeparateRange);
-    } */
-   
 
-    private void OnDrawGizmosSelected()
-    {
+
         //
         //  Draw safe space box
         //
@@ -123,7 +120,7 @@ public class Wanderer : Agent
         //
         Gizmos.color = Color.yellow;
 
-        
+
         foreach (Vector3 pos in foundObstacles)
         {
             Gizmos.DrawLine(transform.position, pos);
