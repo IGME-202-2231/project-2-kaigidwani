@@ -108,7 +108,8 @@ public class SceneManager : MonoBehaviour
                     0),
                 Quaternion.identity)
                 );
-        allFish[allFish.Count - 1].GetComponent<Agent>().Manager = this;
+        GameObject thisFish = allFish[allFish.Count - 1];
+        thisFish.GetComponent<Agent>().Manager = this;
     }
 
     // Method for gaussian curve formula

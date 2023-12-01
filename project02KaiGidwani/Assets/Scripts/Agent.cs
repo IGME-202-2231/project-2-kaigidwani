@@ -35,6 +35,7 @@ public abstract class Agent : MonoBehaviour
     protected Vector3 ultimaForce;
 
     [SerializeField] protected string agentType;
+    public string AgentType { get { return agentType; } }
 
     [SerializeField] SceneManager manager;
     public SceneManager Manager { get { return manager; } set { manager = value; } }
@@ -253,42 +254,45 @@ public abstract class Agent : MonoBehaviour
             Vector3 futurePos = CalcFuturePosition(avoidTime);
             float dist = Vector3.Distance(transform.position, futurePos);
 
-            
-            // If in front of me
-            if (forwardDot >= -obstacle.GetComponent<PhysicsObject>().Radius)
+            if (agentType != obstacle.GetComponent<Agent>().agentType)
             {
-                // Within the box in front of us
-                if (forwardDot <= dist + obstacle.GetComponent<PhysicsObject>().Radius)
+                // If in front of me
+                if (forwardDot >= -obstacle.GetComponent<PhysicsObject>().Radius)
                 {
-                    // how far left/right?
-                    rightDot = Vector3.Dot(transform.right, agentToObstacle);
-
-                    Vector3 steeringForce = transform.right * (forwardDot / dist) * physicsObject.MaxSpeed;
-
-                    // Is the obstacle within the safe box width?
-                    if (Math.Abs(rightDot) <= physicsObject.Radius)
+                    // Within the box in front of us
+                    if (forwardDot <= dist + obstacle.GetComponent<PhysicsObject>().Radius)
                     {
-                        // If I care
-                        // TODO: Add a steering force
-                        foundObstacles.Add(obstacle.transform.position);
+                        // how far left/right?
+                        rightDot = Vector3.Dot(transform.right, agentToObstacle);
 
+                        Vector3 steeringForce = transform.right * (forwardDot / dist) * physicsObject.MaxSpeed;
 
-                        // If left, steer right
-                        if (rightDot < 0)
+                        // Is the obstacle within the safe box width?
+                        if (Math.Abs(rightDot) <= physicsObject.Radius)
                         {
-                            totalAvoidForce += steeringForce;
-                        }
+                            // If I care
+                            // TODO: Add a steering force
+                            foundObstacles.Add(obstacle.transform.position);
 
-                        // If right, steer left
-                        else
-                        {
-                            totalAvoidForce -= steeringForce;
+
+                            // If left, steer right
+                            if (rightDot < 0)
+                            {
+                                totalAvoidForce += steeringForce;
+                            }
+
+                            // If right, steer left
+                            else
+                            {
+                                totalAvoidForce -= steeringForce;
+                            }
                         }
                     }
                 }
+                // Otherwise it's behind me and I don't care
             }
-            // Otherwise it's behind me and I don't care
-            
+
+
         }
 
         return totalAvoidForce;

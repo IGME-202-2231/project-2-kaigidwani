@@ -45,6 +45,9 @@ public class PhysicsObject : MonoBehaviour
         // Grab the camera's ortographic size
         screenMax.y = Camera.main.orthographicSize;
 
+        // Give starter velocity. Required for object avoidance.
+        velocity = new Vector3(0.1f, 0.1f, 0.0f);
+
         // Width is not a value found on the Camera component
         // Must calculate the width yourself:
         // Get the camera's height and multiply it by the Camera's aspect ratio:
