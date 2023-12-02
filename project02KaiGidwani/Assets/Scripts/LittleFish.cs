@@ -4,7 +4,13 @@ using UnityEngine;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
 
-public class Wanderer : Agent
+public enum LittleFishState
+{
+    Schooling,
+    Feeding
+}
+
+public class LittleFish : Agent
 {
     private Vector3 wanderForce;
     [SerializeField] private float wanderTime;
