@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 
 public class SceneManager : MonoBehaviour
 {
-    // Prefab for crows
+    // Prefab for small fish
     [SerializeField] private GameObject smallFishPrefab;
 
-    // Prefab for eagles
+    // Prefab for swordfish
     [SerializeField] private GameObject swordfishPrefab;
 
-    // List for all birds
+    // List for all fish
     [SerializeField] public List<GameObject> allFish;
 
     // The camera for the scene
@@ -27,6 +27,8 @@ public class SceneManager : MonoBehaviour
 
     private Vector3 mousePosition;
 
+    private List<GameObject> allFishFood;
+    public List<GameObject> AllFishFood { get { return allFishFood; } }
 
     // Start is called before the first frame update
     void Start()
@@ -36,8 +38,11 @@ public class SceneManager : MonoBehaviour
         // Width isn't a value on the camera object
         width = height * cameraObject.aspect;
 
-        // Initiate allBirds
+        // Initiate allFish
         allFish = new List<GameObject>();
+
+        // Initiate allFishFood
+        allFishFood = new List<GameObject>();
 
         Spawn();
     }
@@ -59,19 +64,20 @@ public class SceneManager : MonoBehaviour
         for (int i = 0; i < numFish; i++)
         {
             SpawnFish(smallFishPrefab);
-            /* Spawn a lesser but appropiate amount of swordfish
+            // Spawn a lesser but appropiate amount of swordfish
             if (i % 3 == 0)
             {
-                SpawnSwordFish();
+                SpawnFish(swordfishPrefab);
             }
-            */
+            
         }
+        /*
         // Just spawn 2 swordfish
         SpawnFish(swordfishPrefab, new Vector3(-5, 3, 0));
         SpawnFish(swordfishPrefab, new Vector3(4, 4, 0));
         SpawnFish(swordfishPrefab, new Vector3(6, -2, 0));
         SpawnFish(swordfishPrefab, new Vector3(-2, -3, 0));
-
+        */
     }
 
 

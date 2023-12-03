@@ -139,6 +139,19 @@ public class PhysicsObject : MonoBehaviour
         }
     }
 
+    public bool circleCollisionCheck(PhysicsObject cA, PhysicsObject cB)
+    {
+        return
+            // Pythagorean for distance < combined radii squared (so we don't have to use sqrt)
+            Mathf.Pow(cA.transform.position.x - cB.transform.position.x, 2) +
+            Mathf.Pow(cA.transform.position.y - cB.transform.position.y, 2) <
+            Mathf.Pow(cA.Radius + cB.Radius, 2);
+    }
+    public bool circleCollisionCheck(PhysicsObject cB)
+    {
+        return circleCollisionCheck(this, cB);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;

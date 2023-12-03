@@ -15,6 +15,8 @@ public class LittleFish : Agent
     private Vector3 wanderForce;
     [SerializeField] private float wanderTime;
     [SerializeField] private float wanderScalar;
+    private float wanderAngle = 0f;
+    [SerializeField] public float maxWanderAngle = 45f;
 
     private Vector3 boundsForce;
     [SerializeField] private float boundsTime;
@@ -30,11 +32,15 @@ public class LittleFish : Agent
     [SerializeField] private float alignScalar;
 
     [SerializeField] private float avoidScalar;
-
-    private float wanderAngle = 0f;
-    [SerializeField] public float maxWanderAngle = 45f;
-
     [SerializeField] float avoidTime;
+
+    private Vector3 huntingForce;
+    private GameObject chosenFood = null;
+    [SerializeField] private float huntingScalar;
+    [SerializeField] private float huntingRange = 5f;
+
+
+    LittleFishState state;
 
 
     protected override void Init()
@@ -44,31 +50,42 @@ public class LittleFish : Agent
 
     protected override void CalcSteeringForces()
     {
-        // Get wander force
-        wanderForce = Wander(wanderTime, wanderAngle, maxWanderAngle);
-        wanderForce *= wanderScalar;
-        ultimaForce += wanderForce;
+        switch (state)
+        {
+            case LittleFishState.Schooling:
+                // Get wander force
+                wanderForce = Wander(wanderTime, wanderAngle, maxWanderAngle);
+                wanderForce *= wanderScalar;
+                ultimaForce += wanderForce;
 
+                // Get bounds force
+                boundsForce = StayInBounds(boundsTime);
+                boundsForce *= boundsScalar;
+                ultimaForce += boundsForce;
 
-        // Get bounds force
-        boundsForce = StayInBounds(boundsTime);
-        boundsForce *= boundsScalar;
-        ultimaForce += boundsForce;
+                // Get cohesion force
+                cohesionForce = Cohesion(this.GetComponent<Agent>().Manager.allFish);
+                cohesionForce *= cohesionScalar;
+                ultimaForce += cohesionForce;
+
+                // Get align force
+                alignForce = Align(this.GetComponent<Agent>().Manager.allFish);
+                alignForce *= alignScalar;
+                ultimaForce += alignForce;
+                break;
+
+            case LittleFishState.Feeding:
+                // Seek fish food in fishfood radius
+                huntingForce = Seek(chosenFood);
+                huntingForce *= huntingScalar;
+                ultimaForce += huntingForce;
+                break;
+        }
 
         // Get separate force
         separateForce = Separate();
         separateForce *= separateScalar;
         ultimaForce += separateForce;
-
-        // Get cohesion force
-        cohesionForce = Cohesion(this.GetComponent<Agent>().Manager.allFish);
-        cohesionForce *= cohesionScalar;
-        ultimaForce += cohesionForce;
-
-        // Get align force
-        alignForce = Align(this.GetComponent<Agent>().Manager.allFish);
-        alignForce *= alignScalar;
-        ultimaForce += alignForce;
 
         // Get avoiding obstacles force
         ultimaForce += AvoidObstacles(avoidTime) * avoidScalar;
@@ -77,7 +94,42 @@ public class LittleFish : Agent
         physicsObject.ApplyForce(ultimaForce);
     }
 
-    
+    protected override void StateChangeCheck()
+    {
+        List<GameObject> nearbyFishFood = new List<GameObject>();
+
+        // Add every nearby fishfood to the list
+        foreach (GameObject fishFood in manager.AllFishFood)
+        {
+            float d = Vector3.Distance(transform.position, fishFood.transform.position);
+            if ((d > 0) && (d < huntingRange))
+            {
+                nearbyFishFood.Add(fishFood);
+            }
+        }
+
+
+        if (nearbyFishFood.Count > 0)
+        {
+            // Change states
+            state = LittleFishState.Feeding;
+
+            // If prevoiusly chosen fishfood is gone, choose a new fish food to seek
+            if (chosenFood == null)
+            {
+                chosenFood = nearbyFishFood[Random.Range(0, nearbyFishFood.Count)];
+            }
+        }
+        else
+        {
+            // Change states
+            state = LittleFishState.Schooling;
+
+            // Set chosenFishFood to null
+            chosenFood = null;
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.black;

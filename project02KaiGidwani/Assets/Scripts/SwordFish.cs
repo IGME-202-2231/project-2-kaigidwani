@@ -15,6 +15,8 @@ public class SwordFish : Agent
     private Vector3 wanderForce;
     [SerializeField] private float wanderTime;
     [SerializeField] private float wanderScalar;
+    private float wanderAngle = 0f;
+    [SerializeField] public float maxWanderAngle = 45f;
 
     private Vector3 boundsForce;
     [SerializeField] private float boundsTime;
@@ -30,12 +32,15 @@ public class SwordFish : Agent
     [SerializeField] private float alignScalar;
 
     [SerializeField] private float avoidScalar;
-
-    private float wanderAngle = 0f;
-    [SerializeField] public float maxWanderAngle = 45f;
-
     [SerializeField] float avoidTime;
 
+    private Vector3 huntingForce;
+    private GameObject chosenFood = null;
+    [SerializeField] private float huntingScalar;
+    [SerializeField] private float huntingRange = 5f;
+
+
+    SwordFishState state;
 
     protected override void Init()
     {
@@ -44,40 +49,71 @@ public class SwordFish : Agent
 
     protected override void CalcSteeringForces()
     {
-        // Get wander force
-        wanderForce = Wander(wanderTime, wanderAngle, maxWanderAngle);
-        wanderForce *= wanderScalar;
-        ultimaForce += wanderForce;
+        switch (state)
+        {
+            case SwordFishState.Stalking:
+                // Get wander force
+                wanderForce = Wander(wanderTime, wanderAngle, maxWanderAngle);
+                wanderForce *= wanderScalar;
+                ultimaForce += wanderForce;
+                return;
 
+            case SwordFishState.Hunting:
+                // Seek food in food radius
+                huntingForce = Seek(chosenFood);
+                huntingForce *= huntingScalar;
+                ultimaForce += huntingForce;
+                return;
+        }
 
         // Get bounds force
         boundsForce = StayInBounds(boundsTime);
         boundsForce *= boundsScalar;
         ultimaForce += boundsForce;
 
-        // Get separate force
-        separateForce = Separate();
-        separateForce *= separateScalar;
-        ultimaForce += separateForce;
-
-        // Get cohesion force
-        cohesionForce = Cohesion(this.GetComponent<Agent>().Manager.allFish);
-        cohesionForce *= cohesionScalar;
-        ultimaForce += cohesionForce;
-
-        // Get align force
-        alignForce = Align(this.GetComponent<Agent>().Manager.allFish);
-        alignForce *= alignScalar;
-        ultimaForce += alignForce;
-
-        // Get avoiding obstacles force
-        ultimaForce += AvoidObstacles(avoidTime) * avoidScalar;
-
         // Apply forces to the physics object
         physicsObject.ApplyForce(ultimaForce);
     }
 
-    
+    protected override void StateChangeCheck()
+    {
+        List<GameObject> nearbyFood = new List<GameObject>();
+
+        // Add every nearby fishfood to the list
+        foreach (GameObject food in manager.allFish)
+        {
+            if (food.GetComponent<Agent>().AgentType != agentType)
+            {
+                float d = Vector3.Distance(transform.position, food.transform.position);
+                if ((d > 0) && (d < huntingRange))
+                {
+                    nearbyFood.Add(food);
+                }
+            }
+        }
+
+
+        if (nearbyFood.Count > 0)
+        {
+            // Change states
+            state = SwordFishState.Hunting;
+
+            // If prevoiusly chosen food is gone, choose a new food to seek
+            if (chosenFood == null)
+            {
+                chosenFood = nearbyFood[Random.Range(0, nearbyFood.Count)];
+            }
+        }
+        else
+        {
+            // Change states
+            state = SwordFishState.Stalking;
+
+            // Set chosenFood to null
+            chosenFood = null;
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.black;

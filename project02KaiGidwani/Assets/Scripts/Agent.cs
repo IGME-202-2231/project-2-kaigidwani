@@ -38,8 +38,9 @@ public abstract class Agent : MonoBehaviour
     [SerializeField] protected string agentType;
     public string AgentType { get { return agentType; } }
 
-    [SerializeField] SceneManager manager;
+    [SerializeField] protected SceneManager manager;
     public SceneManager Manager { get { return manager; } set { manager = value; } }
+
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +54,8 @@ public abstract class Agent : MonoBehaviour
 
         CalcSteeringForces();
 
+        StateChangeCheck();
+
         Vector3.ClampMagnitude(ultimaForce, maxForce);
         physicsObject.ApplyForce(ultimaForce);
     }
@@ -60,6 +63,8 @@ public abstract class Agent : MonoBehaviour
     protected abstract void Init();
 
     protected abstract void CalcSteeringForces();
+
+    protected abstract void StateChangeCheck();
 
     protected Vector3 Seek(Vector3 targetPos)
     {

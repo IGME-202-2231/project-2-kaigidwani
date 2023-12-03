@@ -20,6 +20,11 @@ public class Obstacle : Agent
         
     }
 
+    protected override void StateChangeCheck()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
