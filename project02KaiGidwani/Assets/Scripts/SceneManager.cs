@@ -77,9 +77,6 @@ public class SceneManager : MonoBehaviour
         // Just spawn 2 swordfish
         SpawnFish(swordfishPrefab, new Vector3(-5, 3, 0));
         SpawnFish(swordfishPrefab, new Vector3(4, 4, 0));
-        SpawnFish(swordfishPrefab, new Vector3(6, -2, 0));
-        SpawnFish(swordfishPrefab, new Vector3(-2, -3, 0));
-        
     }
 
 

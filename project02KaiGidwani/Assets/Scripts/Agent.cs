@@ -188,11 +188,14 @@ public abstract class Agent : MonoBehaviour
         int count = 0;
         foreach (GameObject other in allFish)
         {
-            float d = Vector3.Distance(transform.position, other.transform.position);
-            if ((d > 0) && (d < cohesionRange))
+            if (agentType == other.GetComponent<Agent>().agentType)
             {
-                sum += other.transform.position;
-                count++;
+                float d = Vector3.Distance(transform.position, other.transform.position);
+                if ((d > 0) && (d < cohesionRange))
+                {
+                    sum += other.transform.position;
+                    count++;
+                }
             }
         }
         if (count > 0)
@@ -212,11 +215,14 @@ public abstract class Agent : MonoBehaviour
         int count = 0;
         foreach (GameObject other in allFish)
         {
-            float d = Vector3.Distance(transform.position, other.transform.position);
-            if ((d > 0) && (d < alignRange))
+            if (agentType == other.GetComponent<Agent>().agentType)
             {
-                sum += other.GetComponent<PhysicsObject>().Velocity;
-                count++;
+                float d = Vector3.Distance(transform.position, other.transform.position);
+                if ((d > 0) && (d < alignRange))
+                {
+                    sum += other.GetComponent<PhysicsObject>().Velocity;
+                    count++;
+                }
             }
         }
         if (count > 0)

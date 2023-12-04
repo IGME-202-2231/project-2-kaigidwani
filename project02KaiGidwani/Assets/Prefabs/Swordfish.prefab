@@ -127,16 +127,16 @@ MonoBehaviour:
   maxWanderChangePerSecond: 5
   wanderRadius: 1
   wanderRange: 1
-  separateRange: 1
+  separateRange: 0.4
   cohesionRange: 5
   alignRange: 5
   agentType: Swordfish
   manager: {fileID: 0}
-  wanderTime: 1
-  wanderScalar: 3
-  maxWanderAngle: 45
+  wanderTime: 2
+  wanderScalar: 5
+  maxWanderAngle: 20
   boundsTime: 1
-  boundsScalar: 12
+  boundsScalar: 10
   separateScalar: 0
   cohesionScalar: 0
   alignScalar: 0
