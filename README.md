@@ -5,6 +5,12 @@
 # Note for TA Mike!
 I'm changing my game from birds landing on a tree to a school of fish being hunted. Erika and I both agreed that it sounds easier to do and more fun. She also told me to write this note haha
 
+## Work left to do:
+-   Adjust sterring behaviors to satisfaction
+-   Add player clicking spawning of fish food
+-   Add state machine transitions to swordfish
+-   Bugtest state machine
+
 ### Student Info
 
 -   Name: _Kai Gidwani_
