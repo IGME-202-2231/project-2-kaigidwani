@@ -107,7 +107,7 @@ MonoBehaviour:
   gravityStrength: {x: 0, y: 0, z: 0}
   acceleration: {x: 0, y: 0, z: 0}
   mass: 1
-  maxSpeed: 5
+  maxSpeed: 3
   radius: 1
 --- !u!114 &920404072203564449
 MonoBehaviour:
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   physicsObject: {fileID: -8788054896433873437}
-  maxSpeed: 5
+  maxSpeed: 3
   maxForce: 10
   maxWanderChangePerSecond: 5
   wanderRadius: 1
@@ -134,10 +134,14 @@ MonoBehaviour:
   manager: {fileID: 0}
   wanderTime: 1
   wanderScalar: 3
+  maxWanderAngle: 45
   boundsTime: 1
-  boundsScalar: 10
+  boundsScalar: 12
   separateScalar: 0
   cohesionScalar: 0
   alignScalar: 0
-  maxWanderAngle: 45
+  avoidScalar: 0
   avoidTime: 1
+  huntingScalar: 0
+  huntingRange: 5
+  state: 0

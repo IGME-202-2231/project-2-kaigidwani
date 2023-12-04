@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.GraphicsBuffer;
 
 public enum LittleFishState
 {
@@ -134,7 +132,7 @@ public class LittleFish : Agent
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position, transform.position + ultimaForce);
