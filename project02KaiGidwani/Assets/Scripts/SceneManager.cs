@@ -60,24 +60,26 @@ public class SceneManager : MonoBehaviour
     {
         CleanUp();
 
+        
         int numFish = Random.Range(minFish, maxFish);
         for (int i = 0; i < numFish; i++)
         {
             SpawnFish(smallFishPrefab);
             // Spawn a lesser but appropiate amount of swordfish
+            /*
             if (i % 3 == 0)
             {
                 SpawnFish(swordfishPrefab);
-            }
+            }*/
             
         }
-        /*
+        
         // Just spawn 2 swordfish
         SpawnFish(swordfishPrefab, new Vector3(-5, 3, 0));
         SpawnFish(swordfishPrefab, new Vector3(4, 4, 0));
         SpawnFish(swordfishPrefab, new Vector3(6, -2, 0));
         SpawnFish(swordfishPrefab, new Vector3(-2, -3, 0));
-        */
+        
     }
 
 

@@ -134,11 +134,14 @@ MonoBehaviour:
   manager: {fileID: 0}
   wanderTime: 1
   wanderScalar: 3
+  maxWanderAngle: 45
   boundsTime: 1
   boundsScalar: 10
   separateScalar: 0
   cohesionScalar: 0
   alignScalar: 0
   avoidScalar: 7
-  maxWanderAngle: 45
   avoidTime: 1
+  huntingScalar: 0
+  huntingRange: 5
+  state: 0

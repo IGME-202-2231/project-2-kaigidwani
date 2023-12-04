@@ -263,7 +263,7 @@ public abstract class Agent : MonoBehaviour
             if (agentType != obstacle.GetComponent<Agent>().agentType)
             {
                 // If in front of me
-                if (forwardDot >= -obstacle.GetComponent<PhysicsObject>().Radius)
+                if (forwardDot >= -physicsObject.Radius)
                 {
                     // Within the box in front of us
                     if (forwardDot <= dist + obstacle.GetComponent<PhysicsObject>().Radius)
@@ -271,13 +271,12 @@ public abstract class Agent : MonoBehaviour
                         // how far left/right?
                         rightDot = Vector3.Dot(transform.right, agentToObstacle);
 
-                        Vector3 steeringForce = transform.right * (forwardDot / dist) * physicsObject.MaxSpeed;
+                        Vector3 steeringForce = transform.right * (1 - forwardDot / dist) * physicsObject.MaxSpeed;
 
                         // Is the obstacle within the safe box width?
-                        if (Math.Abs(rightDot) <= physicsObject.Radius)
+                        if (Mathf.Abs(rightDot) <= physicsObject.Radius + obstacle.GetComponent<PhysicsObject>().Radius)
                         {
                             // If I care
-                            // TODO: Add a steering force
                             foundObstacles.Add(obstacle.transform.position);
 
 

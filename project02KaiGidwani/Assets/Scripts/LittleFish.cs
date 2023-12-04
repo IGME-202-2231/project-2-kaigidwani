@@ -31,6 +31,7 @@ public class LittleFish : Agent
     private Vector3 alignForce;
     [SerializeField] private float alignScalar;
 
+    private Vector3 avoidForce;
     [SerializeField] private float avoidScalar;
     [SerializeField] float avoidTime;
 
@@ -40,7 +41,7 @@ public class LittleFish : Agent
     [SerializeField] private float huntingRange = 5f;
 
 
-    LittleFishState state;
+    [SerializeField] LittleFishState state;
 
 
     protected override void Init()
@@ -87,8 +88,11 @@ public class LittleFish : Agent
         separateForce *= separateScalar;
         ultimaForce += separateForce;
 
+
         // Get avoiding obstacles force
-        ultimaForce += AvoidObstacles(avoidTime) * avoidScalar;
+        avoidForce = AvoidObstacles(avoidTime);
+        avoidForce *= avoidScalar;
+        ultimaForce += avoidForce;
 
         // Apply forces to the physics object
         physicsObject.ApplyForce(ultimaForce);
@@ -130,7 +134,7 @@ public class LittleFish : Agent
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position, transform.position + ultimaForce);
@@ -141,11 +145,11 @@ public class LittleFish : Agent
         Gizmos.color = Color.white;
         Gizmos.DrawLine(transform.position, transform.position + boundsForce);
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + cohesionForce);
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawLine(transform.position, transform.position + cohesionForce);
 
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(transform.position, transform.position + alignForce);
+        //Gizmos.color = Color.yellow;
+        //Gizmos.DrawLine(transform.position, transform.position + alignForce);
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawLine(transform.position, transform.position + separateForce);
@@ -183,5 +187,8 @@ public class LittleFish : Agent
         {
             Gizmos.DrawLine(transform.position, pos);
         }
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + avoidForce);
     } 
 }

@@ -156,8 +156,8 @@ MonoBehaviour:
   swordfishPrefab: {fileID: 2769165776805740054, guid: ac62a3e7e3dfb49418e5b8bb8a9f11ed, type: 3}
   allFish: []
   cameraObject: {fileID: 519420031}
-  minFish: 0
-  maxFish: 0
+  minFish: 15
+  maxFish: 20
 --- !u!4 &233605535
 Transform:
   m_ObjectHideFlags: 0

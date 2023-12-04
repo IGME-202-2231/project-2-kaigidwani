@@ -40,7 +40,7 @@ public class SwordFish : Agent
     [SerializeField] private float huntingRange = 5f;
 
 
-    SwordFishState state;
+    [SerializeField] SwordFishState state;
 
     protected override void Init()
     {
