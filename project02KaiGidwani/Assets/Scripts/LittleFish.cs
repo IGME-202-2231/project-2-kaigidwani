@@ -143,11 +143,11 @@ public class LittleFish : Agent
         Gizmos.color = Color.white;
         Gizmos.DrawLine(transform.position, transform.position + boundsForce);
 
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawLine(transform.position, transform.position + cohesionForce);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + cohesionForce);
 
-        //Gizmos.color = Color.yellow;
-        //Gizmos.DrawLine(transform.position, transform.position + alignForce);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, transform.position + alignForce);
 
         Gizmos.color = Color.magenta;
         Gizmos.DrawLine(transform.position, transform.position + separateForce);

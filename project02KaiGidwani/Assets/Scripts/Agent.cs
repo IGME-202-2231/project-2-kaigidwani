@@ -263,7 +263,7 @@ public abstract class Agent : MonoBehaviour
             if (agentType != obstacle.GetComponent<Agent>().agentType)
             {
                 // If in front of me
-                if (forwardDot >= -physicsObject.Radius)
+                if (forwardDot >= -(physicsObject.Radius + obstacle.GetComponent<PhysicsObject>().Radius))
                 {
                     // Within the box in front of us
                     if (forwardDot <= dist + obstacle.GetComponent<PhysicsObject>().Radius)
