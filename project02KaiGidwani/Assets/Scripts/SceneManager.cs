@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class SceneManager : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class SceneManager : MonoBehaviour
 
     // Prefab for swordfish
     [SerializeField] private GameObject swordfishPrefab;
+
+    // Prefab for fish food
+    [SerializeField] private GameObject fishFoodPrefab;
 
     // List for all fish
     [SerializeField] public List<GameObject> allFish;
@@ -53,6 +57,21 @@ public class SceneManager : MonoBehaviour
         // Get the current mouse position
         mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mousePosition.z = 0;
+    }
+
+    public void SpawnFishFood(InputAction.CallbackContext context)
+    {
+        Debug.Log("Spawning fish food");
+        // Only spawns once per click
+        if (context.phase == InputActionPhase.Performed)
+        {
+            allFishFood.Add(
+            Instantiate(
+                fishFoodPrefab,
+                new Vector3(mousePosition.x, mousePosition.y, 0),
+                Quaternion.identity)
+                );
+        }
     }
 
     // Spawn creatures

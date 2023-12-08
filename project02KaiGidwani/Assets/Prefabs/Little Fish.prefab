@@ -143,5 +143,5 @@ MonoBehaviour:
   avoidScalar: 9
   avoidTime: 3
   huntingScalar: 0
-  huntingRange: 5
+  huntingRange: 2
   state: 0
