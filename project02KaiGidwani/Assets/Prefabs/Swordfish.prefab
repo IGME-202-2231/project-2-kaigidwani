@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8189871665740557272}
   - component: {fileID: 5085620725328415364}
   - component: {fileID: -8788054896433873437}
-  - component: {fileID: 920404072203564449}
+  - component: {fileID: 8610942510400429816}
   m_Layer: 0
   m_Name: Swordfish
   m_TagString: Untagged
@@ -108,8 +108,8 @@ MonoBehaviour:
   acceleration: {x: 0, y: 0, z: 0}
   mass: 1
   maxSpeed: 3
-  radius: 1
---- !u!114 &920404072203564449
+  radius: 0.7
+--- !u!114 &8610942510400429816
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2769165776805740054}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c38a8106c5261c4da9968d573cb3753, type: 3}
+  m_Script: {fileID: 11500000, guid: 858fff6f16fe9af4e89f95aade30e707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   physicsObject: {fileID: -8788054896433873437}
@@ -142,6 +142,8 @@ MonoBehaviour:
   alignScalar: 0
   avoidScalar: 0
   avoidTime: 1
-  huntingScalar: 0
+  huntingScalar: 2
   huntingRange: 5
-  state: 0
+  state: 1
+  stalkingTimer: 0
+  huntingTimer: 0

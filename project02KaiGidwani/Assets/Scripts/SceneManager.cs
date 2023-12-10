@@ -17,6 +17,8 @@ public class SceneManager : MonoBehaviour
 
     // List for all fish
     [SerializeField] public List<GameObject> allFish;
+    public List<GameObject> AllFish { get { return allFish; } set { allFish = value; } }
+
 
     // The camera for the scene
     [SerializeField] private Camera cameraObject;
@@ -31,8 +33,9 @@ public class SceneManager : MonoBehaviour
 
     private Vector3 mousePosition;
 
+    // List for all fish
     private List<GameObject> allFishFood;
-    public List<GameObject> AllFishFood { get { return allFishFood; } }
+    public List<GameObject> AllFishFood { get { return allFishFood; } set { allFishFood = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +60,8 @@ public class SceneManager : MonoBehaviour
         // Get the current mouse position
         mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mousePosition.z = 0;
+
+
     }
 
     public void SpawnFishFood(InputAction.CallbackContext context)
@@ -150,6 +155,15 @@ public class SceneManager : MonoBehaviour
                  Mathf.Sqrt(-2.0f * Mathf.Log(val1)) *
                  Mathf.Sin(2.0f * Mathf.PI * val2);
         return mean + stdDev * gaussValue;
+    }
+
+    public bool circleCheck(PhysicsObject sA, PhysicsObject sB)
+    {
+        return
+            // Pythagorean for distance < combined radii squared (so we don't have to use sqrt)
+            Mathf.Pow(sA.transform.position.x - sB.transform.position.x, 2) +
+            Mathf.Pow(sA.transform.position.y - sB.transform.position.y, 2) <
+            Mathf.Pow(sA.Radius + sB.Radius, 2);
     }
 
     /*

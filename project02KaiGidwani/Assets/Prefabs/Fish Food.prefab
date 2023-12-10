@@ -105,6 +105,6 @@ MonoBehaviour:
   boolGravity: 1
   gravityStrength: {x: 0, y: -0.5, z: 0}
   acceleration: {x: 0, y: 0, z: 0}
-  mass: 1
+  mass: 1.5
   maxSpeed: 1
   radius: 0.15

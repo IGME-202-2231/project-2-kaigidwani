@@ -57,11 +57,6 @@ public class LittleFish : Agent
                 wanderForce *= wanderScalar;
                 ultimaForce += wanderForce;
 
-                // Get bounds force
-                boundsForce = StayInBounds(boundsTime);
-                boundsForce *= boundsScalar;
-                ultimaForce += boundsForce;
-
                 // Get cohesion force
                 cohesionForce = Cohesion(this.GetComponent<Agent>().Manager.allFish);
                 cohesionForce *= cohesionScalar;
@@ -71,16 +66,26 @@ public class LittleFish : Agent
                 alignForce = Align(this.GetComponent<Agent>().Manager.allFish);
                 alignForce *= alignScalar;
                 ultimaForce += alignForce;
+
+
+                // Get bounds force
+                boundsForce = StayInBounds(boundsTime);
+                boundsForce *= boundsScalar;
+                ultimaForce += boundsForce;
+
                 break;
 
             case LittleFishState.Feeding:
                 // Seek fish food in fishfood radius
-                huntingForce = Seek(chosenFood);
-                huntingForce *= huntingScalar;
-                ultimaForce += huntingForce;
-                break;
+                if (chosenFood != null)
+                {
+                    // Get hunting force
+                    huntingForce = Seek(chosenFood);
+                    huntingForce *= huntingScalar;
+                    ultimaForce += huntingForce;
+                }
+            break;
         }
-
         // Get separate force
         separateForce = Separate();
         separateForce *= separateScalar;
@@ -113,8 +118,39 @@ public class LittleFish : Agent
 
         if (nearbyFishFood.Count > 0)
         {
-            // Change states
+            // === Change states ===
             state = LittleFishState.Feeding;
+
+
+            // === Check collisions ===
+
+            // List of fishfood to remove
+            List<GameObject> fishFoodToRemove = new List<GameObject>();
+
+            // Loop through each nearby fish food object to see if we are colliding with it
+            foreach (GameObject fishFood in nearbyFishFood)
+            {
+                // Check if we are colliding with it
+                if (manager.circleCheck(this.GetComponent<PhysicsObject>(), fishFood.GetComponent<PhysicsObject>()))
+                {
+                    // If so, add it to the list to remove it
+                    fishFoodToRemove.Add(fishFood);
+                }
+            }
+
+            // Remove the fish food
+            foreach (GameObject fishFood in fishFoodToRemove)
+            {
+                // Remove the reference to the fishfood
+                manager.AllFishFood.Remove(fishFood);
+                nearbyFishFood.Remove(fishFood);
+
+                // Get rid of the fishfood from the scene
+                Destroy(fishFood);
+            }
+
+
+            // === Set new fishfood ===
 
             // If prevoiusly chosen fishfood is gone, choose a new fish food to seek
             if (chosenFood == null)

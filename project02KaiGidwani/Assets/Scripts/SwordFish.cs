@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public enum SwordFishState
@@ -40,9 +41,14 @@ public class SwordFish : Agent
 
     [SerializeField] SwordFishState state;
 
+    [SerializeField] float stalkingTimer;
+    [SerializeField] float huntingTimer;
+
     protected override void Init()
     {
         wanderAngle = Random.Range(-maxWanderAngle, maxWanderAngle);
+        stalkingTimer = Random.Range(4.5f, 6.5f);
+        huntingTimer = 1;
     }
 
     protected override void CalcSteeringForces()
@@ -54,14 +60,27 @@ public class SwordFish : Agent
                 wanderForce = Wander(wanderTime, wanderAngle, maxWanderAngle);
                 wanderForce *= wanderScalar;
                 ultimaForce += wanderForce;
-                return;
+                
+                // Get cohesion force
+                cohesionForce = Cohesion(this.GetComponent<Agent>().Manager.allFish);
+                cohesionForce *= cohesionScalar;
+                ultimaForce += cohesionForce;
+
+                // Get align force
+                alignForce = Align(this.GetComponent<Agent>().Manager.allFish);
+                alignForce *= alignScalar;
+                ultimaForce += alignForce;
+            break;
 
             case SwordFishState.Hunting:
-                // Seek food in food radius
-                huntingForce = Seek(chosenFood);
-                huntingForce *= huntingScalar;
-                ultimaForce += huntingForce;
-                return;
+                if (chosenFood != null)
+                {
+                    // Get hunting force
+                    huntingForce = Seek(chosenFood);
+                    huntingForce *= huntingScalar;
+                    ultimaForce += huntingForce;
+                }
+            break;
         }
 
         // Get bounds force
@@ -75,40 +94,109 @@ public class SwordFish : Agent
 
     protected override void StateChangeCheck()
     {
-        List<GameObject> nearbyFood = new List<GameObject>();
-
-        // Add every nearby fishfood to the list
-        foreach (GameObject food in manager.allFish)
+        if (state == SwordFishState.Stalking)
         {
-            if (food.GetComponent<Agent>().AgentType != agentType)
-            {
-                float d = Vector3.Distance(transform.position, food.transform.position);
-                if ((d > 0) && (d < huntingRange))
-                {
-                    nearbyFood.Add(food);
-                }
-            }
-        }
-
-
-        if (nearbyFood.Count > 0)
-        {
-            // Change states
-            state = SwordFishState.Hunting;
-
-            // If prevoiusly chosen food is gone, choose a new food to seek
-            if (chosenFood == null)
-            {
-                chosenFood = nearbyFood[Random.Range(0, nearbyFood.Count)];
-            }
+            // Reduce timer
+            stalkingTimer = stalkingTimer - Time.deltaTime;
         }
         else
         {
-            // Change states
+            // Reduce other timer
+            huntingTimer = huntingTimer - Time.deltaTime;
+        }
+
+        // If stalking timer has run out, switch to hunting
+        if (stalkingTimer <= 0 && state == SwordFishState.Stalking)
+        {
+            // Switch to hunting
+            state = SwordFishState.Hunting;
+
+            // Set new hunting timer
+            huntingTimer = Random.Range(1.5f, 2);
+        }
+        // If hunting timer has run out, switch to stalking
+        else if (huntingTimer <= 0 && state == SwordFishState.Hunting)
+        {
+            // Switch to stalking
             state = SwordFishState.Stalking;
+
+            // Set new stalking timer
+            stalkingTimer = Random.Range(4.5f, 6.5f);
 
             // Set chosenFood to null
             chosenFood = null;
+        }
+
+        // Do hunting!
+        if (state == SwordFishState.Hunting)
+        {
+            // Make a list for all nearby food
+            List<GameObject> nearbyFood = new List<GameObject>();
+
+            // Add every nearby fishfood to the list
+            foreach (GameObject food in manager.allFish)
+            {
+                if (food.GetComponent<Agent>().AgentType != agentType)
+                {
+                    float d = Vector3.Distance(transform.position, food.transform.position);
+                    if ((d > 0) && (d < huntingRange))
+                    {
+                        nearbyFood.Add(food);
+                    }
+                }
+            }
+
+
+            if (nearbyFood.Count > 0)
+            {
+                // === Check collisions ===
+
+                // List of food to remove
+                List<GameObject> foodToRemove = new List<GameObject>();
+
+                // Loop through each nearby food object to see if we are colliding with it
+                foreach (GameObject food in nearbyFood)
+                {
+                    // Check if we are colliding with it
+                    if (manager.circleCheck(this.GetComponent<PhysicsObject>(), food.GetComponent<PhysicsObject>()))
+                    {
+                        // If so, add it to the list to remove it
+                        foodToRemove.Add(food);
+                    }
+                }
+
+                // Remove the fish food
+                foreach (GameObject food in foodToRemove)
+                {
+                    // Remove the reference to the food
+                    manager.AllFish.Remove(food);
+                    nearbyFood.Remove(food);
+
+                    // Get rid of the food from the scene
+                    Destroy(food);
+                }
+
+                // Switch back to stalking if we have caught a fish
+                if (foodToRemove.Count > 0)
+                {
+                    // Switch to stalking
+                    state = SwordFishState.Stalking;
+
+                    // Set new stalking timer
+                    stalkingTimer = Random.Range(4.5f, 6.5f);
+
+                    // Set chosenFood to null
+                    chosenFood = null;
+                }
+
+                // === Set new food ===
+
+                // If prevoiusly chosen food is gone, choose a new food to seek
+                if (chosenFood == null)
+                {
+                    chosenFood = nearbyFood[Random.Range(0, nearbyFood.Count)];
+                }
+            }
         }
     }
 
