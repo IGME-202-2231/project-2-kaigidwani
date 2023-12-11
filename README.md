@@ -44,6 +44,7 @@ Small fish flock together and will try to stay together and avoid swordfish. The
 
 - Seek - fish food
 - Avoid Obstacles - Swordfish
+- Avoid Boundaries
 - Seperation - Other small fish
    
 #### State Transistions
