@@ -82,6 +82,10 @@ public class SwordFish : Agent
                 }
             break;
         }
+        // Get separate force
+        separateForce = Separate();
+        separateForce *= separateScalar;
+        ultimaForce += separateForce;
 
         // Get bounds force
         boundsForce = StayInBounds(boundsTime);
