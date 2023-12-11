@@ -25,9 +25,10 @@ Small fish flock together and will try to stay together and avoid swordfish. The
 
 #### Steering Behaviors
 
-- Avoid - Swordfish
-- Flock - Follow group
-- Obstacles - Swordfish
+- Flock (Align & Cohesion)- Follow group
+- Wander - Around the screen
+- Avoid Obstacles - Swordfish
+- Avoid Boundaries
 - Seperation - Other small fish
    
 #### State Transistions
@@ -42,13 +43,11 @@ Small fish flock together and will try to stay together and avoid swordfish. The
 #### Steering Behaviors
 
 - Seek - fish food
-- Avoid - Swordfish
-- Obstacles - Swordfish
-- Seperation - Other small birds
+- Avoid Obstacles - Swordfish
+- Seperation - Other small fish
    
 #### State Transistions
 
-- Getting hunted by a swordfish
 - Fish food no longer nearby (eaten by them or another fish)
 
 ## _Swordfish_
@@ -62,6 +61,8 @@ Swordfish don't school with small fish. They will occasionally try to shoot thro
 #### Steering Behaviors
 
 - Seperation - Other swordfish, small fish
+- Wander - Around the screen
+- Avoid Boundaries
    
 #### State Transistions
 
@@ -69,11 +70,11 @@ Swordfish don't school with small fish. They will occasionally try to shoot thro
    
 ### _Hunting_
 
-**Objective:** _Shoot through the middle of the school of small fish, trying to catch a small fish._
+**Objective:** _Chase and try to catch a small fish._
 
 #### Steering Behaviors
 
-- Seek - Middle of school
+- Seek - A chosen small fish
 - Seperation - Other swordfish
    
 #### State Transistions
@@ -83,15 +84,11 @@ Swordfish don't school with small fish. They will occasionally try to shoot thro
 
 ## Sources
 
--   _List all project sources here –models, textures, sound clips, assets, etc._
--   _If an asset is from the Unity store, include a link to the page and the author’s name_
+-   I made every art asset in this game myself using Piskel.
 
 ## Make it Your Own
 
-- _List out what you added to your game to make it different for you_
-- _If you will add more agents or states make sure to list here and add it to the documention above_
-- _If you will add your own assets make sure to list it here and add it to the Sources section
-- I plan on making all the art assets myself.
+- I made all the art assets myself.
 
 ## Known Issues
 
